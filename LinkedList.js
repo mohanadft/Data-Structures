@@ -36,8 +36,7 @@ class LinkedList {
 
     if (index > this.size) return;
     if (index === 0) {
-      newNode.next = this.head;
-      this.head = newNode;
+      this.insertFirst(data);
     } else {
       let current = this.head;
       for (let i = 0; i < index - 1 && current; i++) {
@@ -96,10 +95,6 @@ class LinkedList {
     return N.data;
   }
 
-  clear() {
-    this.head = null;
-  }
-
   concat(list) {
     if (this.head == null && list.head == null) {
       return null;
@@ -119,5 +114,17 @@ class LinkedList {
       console.log(N.data);
       N = N.next;
     }
+  }
+
+  printReverse(head) {
+    let N = head;
+    if (N) {
+      this.printReverse(N.next);
+      console.log(N.data);
+    }
+  }
+
+  clear() {
+    this.head = null;
   }
 }
