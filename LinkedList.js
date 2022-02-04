@@ -97,6 +97,19 @@ class LinkedList {
     return N.data;
   }
 
+  concat(list) {
+    if (this.head == null && list.head == null) {
+      return null;
+    }
+    let N1 = this.head,
+      N2 = list.head;
+    while (N1.next) {
+      N1 = N1.next;
+    }
+    N1.next = N2;
+    return this;
+  }
+
   print() {
     let N = this.head;
     while (N) {
@@ -105,47 +118,3 @@ class LinkedList {
     }
   }
 }
-
-let list = new LinkedList();
-let list1 = new LinkedList();
-
-list1.inserFirst(5);
-list1.inserFirst(1);
-list1.inserFirst(3);
-list1.inserFirst(0);
-
-list.inserFirst(0);
-list.inserFirst(10);
-list.inserFirst(5);
-list.inserFirst(15);
-
-function mergeLists(head1, head2) {
-  if (head1 == null && head2 == null) {
-    return null;
-  }
-  let N1 = head1,
-    N2 = head2;
-
-  while (N1.next) {
-    N1 = N1.next;
-  }
-  N1.next = N2;
-
-  let nForSort = head1;
-  let n2ForSort = null;
-
-  while (nForSort) {
-    n2ForSort = nForSort.next;
-    while (n2ForSort) {
-      if (nForSort.data > n2ForSort.data)
-        [n2ForSort.data, nForSort.data] = [nForSort.data, n2ForSort.data];
-      n2ForSort = n2ForSort.next;
-    }
-    nForSort = nForSort.next;
-  }
-  return head1;
-}
-
-let ll = new LinkedList();
-
-ll.print();
