@@ -6,72 +6,58 @@ class TreeNode {
   }
 }
 
-class Queue {
-  constructor(front = null, rear = null) {
-    this.front = front;
-    this.rear = rear;
+class BinaryTree {
+  constructor(root) {
+    this.root = root;
   }
 
-  enqueue(data) {
-    if (this.front) {
-      let newNode = new TreeNode(data);
-      this.rear.right = newNode;
-      newNode.left = this.rear;
-      this.rear = newNode;
-    } else {
-      this.front = new TreeNode(data);
-      this.rear = this.front;
+  preOrderUI(root) {
+    let N = root;
+    if (N) {
+      console.log(N.data);
+      this.preOrderUI(N.left);
+      this.preOrderUI(N.right);
     }
   }
 
-  dequeue() {
-    if (this.front) {
-      let temp = this.front;
-      this.front = this.front.right;
-      if (this.front) this.front.left = null;
-      return temp;
+  // Wrapper Method
+  preOrder() {
+    this.preOrderUI(this.root);
+  }
+  inOrderUI(root) {
+    let N = root;
+    if (N) {
+      this.inOrderUI(N.left);
+      console.log(N.data);
+
+      this.inOrderUI(N.right);
     }
+  }
+
+  // Wrapper Method
+  inOrder() {
+    this.inOrderUI(this.root);
+  }
+
+  postOrderUI(root) {
+    let N = root;
+    if (N) {
+      this.postOrderUI(N.left);
+      this.postOrderUI(N.right);
+      console.log(N.data);
+    }
+  }
+  // Wrapper Method
+
+  postOrder() {
+    this.postOrderUI(this.root);
   }
 }
 
-let maxLevel = 0;
-
-const leftViewOfBinaryTree = (root, level) => {
-  if (!root) return;
-
-  if (maxLevel < level) {
-    maxLevel = level;
-  }
-  leftViewOfBinaryTree(root.left, level + 1);
-  maxLevel--;
-  if (maxLevel < level) console.log(root.data);
-};
-
-const rightViewOfBinaryTree = (root, level) => {
-  if (!root) return;
-
-  if (maxLevel < level) {
-    console.log(root.data);
-    maxLevel = level;
-  }
-  rightViewOfBinaryTree(root.right, level + 1);
-};
-
-/*
-          15
-         | \
-        10 20
-       | \   \
-      5   6   55
-     |   |
-    12  111
-*/
-
+// Depth First Traversal === preOrder Traversal
 const depthFirstTraversal = (root) => {
   if (!root) return;
-
   const stack = [root];
-
   while (stack.length > 0) {
     let current = stack.pop();
     console.log(current.data);
@@ -81,37 +67,10 @@ const depthFirstTraversal = (root) => {
   }
 };
 
-const preOrder = (root) => {
-  let N = root;
-
-  if (N) {
-    preOrder(N.left);
-    console.log(N.data);
-  }
-};
-
-const a2 = new TreeNode(15),
-  b = new TreeNode(10),
-  c = new TreeNode(20),
-  d = new TreeNode(5),
-  e = new TreeNode(6),
-  f = new TreeNode(55);
-
-a2.left = b;
-a2.right = c;
-b.right = e;
-b.left = d;
-c.right = f;
-d.left = new TreeNode(12);
-e.left = new TreeNode(111);
-
-let queue = new Queue();
-
-const BFS = (root) => {
+// TODO: Breadth First Traversal === left to right level wise (Complete Binary Tree)
+const BreadthFirstTraversal = (root) => {
   let values = [];
-
   const queue = [root];
-
   while (queue.length > 0) {
     let node = queue.shift();
     if (node) {
@@ -122,5 +81,3 @@ const BFS = (root) => {
   }
   return values.join(", ");
 };
-
-console.log(BFS(a2));

@@ -11,7 +11,7 @@ class LinkedList {
     this.size = 0;
   }
 
-  inserFirst(data) {
+  insertFirst(data) {
     this.head = new Node(data, this.head);
     this.size++;
   }
@@ -62,7 +62,6 @@ class LinkedList {
     while (N.next.next != null) {
       N = N.next;
     }
-
     let temp = N.next.data;
     N.next = null;
     this.size--;
@@ -95,6 +94,10 @@ class LinkedList {
       N = N.next;
     }
     return N.data;
+  }
+
+  clear() {
+    this.head = null;
   }
 
   concat(list) {
