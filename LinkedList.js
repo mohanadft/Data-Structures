@@ -128,3 +128,20 @@ class LinkedList {
     this.head = null;
   }
 }
+
+// Extra Methods
+
+// TODO: Move last element to front of a given Linked List
+const moveLastElementToFront = (list) => {
+  if (list.size === 0 || list.size === 1) return list;
+  let N = list.head;
+  let N1 = null;
+
+  while (N.next) {
+    N1 = N;
+    N = N.next;
+  }
+  N.next = list.head;
+  N1.next = null;
+  list.head = N;
+};
