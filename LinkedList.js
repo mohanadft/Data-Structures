@@ -147,6 +147,5 @@ function mergeLists(head1, head2) {
 }
 
 let ll = new LinkedList();
-ll.head = mergeLists(list.head, list1.head);
 
 ll.print();
