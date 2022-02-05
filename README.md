@@ -61,7 +61,7 @@
   - [Data structures implementaion using _Javascript_ 🧑‍💻](#data-structures-implementaion-using-javascript-)
     - [Table of contents 📚](#table-of-contents-)
   - [Project Vision 🎯](#project-vision-)
-    - [Futere plans 🔮](#futere-plans-)
+    - [Future plans 🔮](#future-plans-)
       - [Adapt TypeScript as the main language](#adapt-typescript-as-the-main-language)
       - [Publishing the project as an _npm package_](#publishing-the-project-as-an-npm-package)
   - [Documentations and Specifications 📒](#documentations-and-specifications-)
@@ -77,7 +77,7 @@
 
 This project aims to provide a dependable archive that includes the implementation of fundamental data structures as well as their utility functions, and to provide a strong foundation of understanding for anybody who wishes to learn about them.
 
-### Futere plans 🔮
+### Future plans 🔮
 
 #### Adapt [TypeScript](https://www.typescriptlang.org/) as the main language
 
