@@ -42,7 +42,8 @@ class LinkedList {
 		if (index > this.size) return
 		if (index === 0) {
 			this.insertFirst(data)
-		} else {
+		} else if (index === this.size) this.insertLast(data)
+		else {
 			let current = this.head
 			for (let i = 0; i < index - 1 && current; i++) {
 				current = current.next
@@ -120,10 +121,22 @@ class LinkedList {
 		while (L1) {
 			N = L1
 			L1 = L1.next
-			N.link = R
+			N.next = R
 			R = N
 		}
 		this.head = R
+	}
+
+	clone() {
+		let list = new LinkedList()
+		if (!this.head) return list
+		let N = this.head
+
+		while (N) {
+			list.insertLast(N.data)
+			N = N.next
+		}
+		return list
 	}
 
 	print(cb = console.log) {
@@ -186,4 +199,30 @@ const lengthRecursively = head => {
 		count += lengthRecursively(head.next)
 	}
 	return count
+}
+
+// TODO: Print the middle of a given linked list
+const printMiddle = list => {
+	if (!list.head) return
+	if (!list.head.next) {
+		console.log(list.head.data)
+		return
+	}
+	let N = list.head
+	for (let i = 0; i < list.size / 2 - 1; i++) N = N.next
+	console.log(N.data)
+}
+
+const isPalindrome = list => {
+	let list2 = list.clone()
+	list.reverse()
+	let N1 = list.head
+	let N2 = list2.head
+
+	while (N1) {
+		if (N1.data !== N2.data) return false
+		N1 = N1.next
+		N2 = N2.next
+	}
+	return true
 }
