@@ -12,6 +12,11 @@ class LinkedList {
 	}
 
 	insertFirst(data) {
+		if (!this.head) {
+			this.head = new Node(data, null)
+			this.size++
+			return
+		}
 		this.head = new Node(data, this.head)
 		this.size++
 	}
@@ -108,6 +113,19 @@ class LinkedList {
 		return this
 	}
 
+	reverse() {
+		let R, N, L1
+		R = null
+		L1 = this.head
+		while (L1) {
+			N = L1
+			L1 = L1.next
+			N.link = R
+			R = N
+		}
+		this.head = R
+	}
+
 	print(cb = console.log) {
 		let N = this.head
 		while (N) {
@@ -123,7 +141,6 @@ class LinkedList {
 			cb(N.data)
 		}
 	}
-  
 
 	clear() {
 		this.head = null
@@ -145,4 +162,28 @@ const moveLastElementToFront = list => {
 	N.next = list.head
 	N1.next = null
 	list.head = N
+}
+
+// TODO: Length Of List Iteratively
+
+const length = list => {
+	let N = list.head
+	let count = 0
+	while (N) {
+		count++
+		N = N.next
+	}
+	return count
+}
+
+// TODO: Length Of List Recursively
+
+const lengthRecursively = head => {
+	if (!head) return 0
+	let count = 0
+	if (head) {
+		count++
+		count += lengthRecursively(head.next)
+	}
+	return count
 }
