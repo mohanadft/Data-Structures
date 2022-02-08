@@ -75,6 +75,7 @@ class DuoubleList {
 		}
 		this.head = this.head.next
 		this.head.prev = null
+		this.size--
 		return temp
 	}
 
@@ -96,10 +97,23 @@ class DuoubleList {
 	}
 
 	removeAtIndex(index) {
-		if (!this.head || index > this.size) return
-		if (!(index = +index && index > 0)) {
-			
+		let target
+		if (!this.head || index >= this.size) return
+		if (!(index == +index && index > 0)) {
+			target = this.removeFirst()
+			return target
 		}
+		if (index === this.size - 1) {
+			target = this.removeLast()
+			return target
+		}
+		let current = this.head
+		for (let i = 0; i < index - 1 && current; i++) current = current.next
+		target = current.next.data
+		current.next.next.prev = current
+		current.next = current.next.next
+		this.size--
+		return target
 	}
 
 	print() {
@@ -111,13 +125,3 @@ class DuoubleList {
 		}
 	}
 }
-
-let list = new DuoubleList()
-
-list.insertLast(0)
-list.insertLast(1)
-list.insertLast(2)
-list.insertLast(3)
-list.removeFirst(2)
-
-list.print()

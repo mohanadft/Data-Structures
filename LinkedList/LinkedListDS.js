@@ -75,6 +75,25 @@ class LinkedList {
 		return temp
 	}
 
+	removeAtIndex(index) {
+		let target
+		if (!this.head || index >= this.size) return
+		if (!(index == +index && index > 0)) {
+			target = this.removeFirst()
+			return target
+		}
+		if (index === this.size - 1) {
+			target = this.removeLast()
+			return target
+		}
+		let current = this.head
+		for (let i = 0; i < index - 1 && current; i++) current = current.next
+		target = current.next.data
+		current.next = current.next.next
+		this.size--
+		return target
+	}
+
 	indexOf(data) {
 		let index = 0
 		if (!this.head) {
