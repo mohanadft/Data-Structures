@@ -6,8 +6,8 @@ class Node {
 }
 
 class LinkedList {
-	constructor(head) {
-		this.head = null
+	constructor(head = null) {
+		this.head = head
 		this.size = 0
 	}
 
@@ -38,19 +38,22 @@ class LinkedList {
 
 	insertAtIndex(index, data) {
 		let newNode = new Node(data)
-
-		if (index > this.size) return
-		if (index === 0) {
+		if (this.head || index > this.size) return
+		if (!(index = +index && index > 0)) {
+			// if the index "undefined" Or 0 this if will run.
 			this.insertFirst(data)
-		} else if (index === this.size) this.insertLast(data)
-		else {
-			let current = this.head
-			for (let i = 0; i < index - 1 && current; i++) {
-				current = current.next
-			}
-			newNode.next = current.next
-			current.next = newNode
+			this.size++
+			return
 		}
+		if (index === this.size) {
+			this.insertLast(data)
+			this.size++
+			return
+		}
+		let current = this.head
+		for (let i = 0; i < index - 1 && current; i++) current = current.next
+		newNode.next = current.next
+		current.next = newNode
 		this.size++
 	}
 
@@ -63,10 +66,9 @@ class LinkedList {
 	}
 
 	removeLast() {
+		if (!this.head) return
 		let N = this.head
-		while (N.next.next != null) {
-			N = N.next
-		}
+		while (N.next.next != null) N = N.next
 		let temp = N.next.data
 		N.next = null
 		this.size--
@@ -158,73 +160,4 @@ class LinkedList {
 	clear() {
 		this.head = null
 	}
-}
-
-// Extra Methods
-
-// TODO: Move last element to front of a given Linked List
-const moveLastElementToFront = list => {
-	if (list.size === 0 || list.size === 1) return list
-	let N = list.head
-	let N1 = null
-
-	while (N.next) {
-		N1 = N
-		N = N.next
-	}
-	N.next = list.head
-	N1.next = null
-	list.head = N
-}
-
-// TODO: Length Of List Iteratively
-
-const length = list => {
-	let N = list.head
-	let count = 0
-	while (N) {
-		count++
-		N = N.next
-	}
-	return count
-}
-
-// TODO: Length Of List Recursively
-
-const lengthRecursively = head => {
-	if (!head) return 0
-	let count = 0
-	if (head) {
-		count++
-		count += lengthRecursively(head.next)
-	}
-	return count
-}
-
-// TODO: Print the middle of a given linked list
-const printMiddle = list => {
-	if (!list.head) return
-	if (!list.head.next) {
-		console.log(list.head.data)
-		return
-	}
-	let N = list.head
-	for (let i = 0; i < list.size / 2 - 1; i++) N = N.next
-	console.log(N.data)
-}
-
-// TODO: check if a singly linked list is palindrome
-
-const isPalindrome = list => {
-	let list2 = list.clone()
-	list.reverse()
-	let N1 = list.head
-	let N2 = list2.head
-
-	while (N1) {
-		if (N1.data !== N2.data) return false
-		N1 = N1.next
-		N2 = N2.next
-	}
-	return true
 }
