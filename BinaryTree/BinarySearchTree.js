@@ -7,6 +7,7 @@ class TreeNode {
 }
 
 class BST {
+	#root
 	constructor(root) {
 		this.#root = root
 	}
