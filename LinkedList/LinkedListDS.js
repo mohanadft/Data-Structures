@@ -249,7 +249,7 @@ const printMiddle = list => {
 
 // TODO: check if a singly linked list is palindrome
 
-const isPalindrome = list => {
+const isPalindrome2 = list => {
 	let list2 = list.clone()
 	list.reverse()
 	let N1 = list.head
