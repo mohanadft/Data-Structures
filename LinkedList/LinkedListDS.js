@@ -275,3 +275,15 @@ const isPalindrome = l => {
 	}
 	return [...values].join('') == values.reverse().join('')
 }
+
+// TODO: Reverse a single linked list
+
+const reverse = list => {
+	let current = list.head
+	const newList = new LinkedList()
+	while (current) {
+		newList.insertFirst(current.data)
+		current = current.next
+	}
+	return newList
+}
