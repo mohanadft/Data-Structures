@@ -196,6 +196,12 @@ class LinkedList {
 
 // TODO: Move last element to front of a given Linked List
 
+/**
+ *
+ * @param {LinkedList} list
+ * @returns LinkedList
+ */
+
 const moveLastElementToFront = list => {
 	if (list.size === 0 || list.size === 1) return list
 	let N = list.head
@@ -208,9 +214,16 @@ const moveLastElementToFront = list => {
 	N.next = list.head
 	N1.next = null
 	list.head = N
+	return list
 }
 
 // TODO: Length Of List Iteratively
+
+/**
+ *
+ * @param {LinkedList} list
+ * @returns number
+ */
 
 const length = list => {
 	let N = list.head
@@ -224,6 +237,12 @@ const length = list => {
 
 // TODO: Length Of List Recursively
 
+/**
+ *
+ * @param {LinkedList} head
+ * @returns number
+ */
+
 const lengthRecursively = head => {
 	if (!head) return 0
 	let count = 0
@@ -235,6 +254,12 @@ const lengthRecursively = head => {
 }
 
 // TODO: Print the middle of a given linked list
+
+/**
+ *
+ * @param {LinkedList} list
+ * @returns null
+ */
 
 const printMiddle = list => {
 	if (!list.head) return
@@ -248,6 +273,12 @@ const printMiddle = list => {
 }
 
 // TODO: check if a singly linked list is palindrome
+
+/**
+ *
+ * @param {LinkedList} list
+ * @returns boolean
+ */
 
 const isPalindrome2 = list => {
 	let list2 = list.clone()
@@ -265,6 +296,12 @@ const isPalindrome2 = list => {
 
 // TODO: check if a singly linked list is palindrome
 
+/**
+ *
+ * @param {LinkedList} l
+ * @returns boolean
+ */
+
 const isPalindrome = l => {
 	if (!l || !l.next) return true
 	let N = l
@@ -278,6 +315,12 @@ const isPalindrome = l => {
 
 // TODO: Reverse a single linked list
 
+/**
+ *
+ * @param {LinkedList} list
+ * @returns LinkedList
+ */
+
 const reverse = list => {
 	let current = list.head
 	const newList = new LinkedList()
@@ -286,4 +329,24 @@ const reverse = list => {
 		current = current.next
 	}
 	return newList
+}
+
+/**
+ * TODO:
+ * Delete Middle Node:
+ *
+ * Implement an algorithm to delete a node in the middle
+ * (i.e., any node but the first and last node, not necessarily the exact middle)
+ * of a singly linked list, given only access to that node.
+ *
+ * @param {Node} node
+ * @returns null
+ */
+
+const deleteNode = n => {
+	if (!n || !n.next) return false
+	let next = n.next
+	n.data = next.data
+	n.next = next.next
+	return true
 }
