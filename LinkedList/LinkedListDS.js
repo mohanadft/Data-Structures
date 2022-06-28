@@ -149,16 +149,20 @@ class LinkedList {
 	}
 
 	reverse() {
-		let R, N, L1
-		R = null
-		L1 = this.head
-		while (L1) {
-			N = L1
-			L1 = L1.next
-			N.next = R
-			R = N
+		let N = this.head
+		let newHead = null
+
+		while (N) {
+			if (newHead) {
+				let newNode = new Node(N.data)
+				newNode.next = newHead
+				newHead = newNode
+			} else {
+				newHead = new Node(N.data)
+			}
+			N = N.next
 		}
-		this.head = R
+		this.head = newHead
 	}
 
 	clone() {
@@ -359,7 +363,6 @@ const deleteNode = n => {
  */
 
 // TODO: Find an element
-
 
 const find = (head, value) => {
 	if (!head) return false
