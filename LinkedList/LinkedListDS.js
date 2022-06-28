@@ -350,3 +350,20 @@ const deleteNode = n => {
 	n.next = next.next
 	return true
 }
+
+/**
+ *
+ * @param {Node} head
+ * @param {number} value
+ * @returns boolean
+ */
+
+// TODO: Find an element
+
+
+const find = (head, value) => {
+	if (!head) return false
+	if (head.data === value) return true
+
+	return find(head.next, value)
+}
