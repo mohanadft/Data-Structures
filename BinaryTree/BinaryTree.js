@@ -4,6 +4,12 @@ class TreeNode {
 		this.left = left
 		this.right = right
 	}
+
+	[Symbol.iterator] = function* depthFirst() {
+		yield this.data
+		if (this.left) yield* this.left
+		if (this.right) yield* this.right
+	}
 }
 
 class BinaryTree {
