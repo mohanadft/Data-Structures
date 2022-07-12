@@ -7,9 +7,8 @@ class TreeNode {
 }
 
 class BST {
-	#root
 	constructor(root) {
-		this.#root = root
+		this.root = new TreeNode(root)
 	}
 
 	#insertUI(root, data) {
@@ -35,8 +34,8 @@ class BST {
 	}
 	// Wrapper Method
 	insert(data) {
-		this.#root = this.#insertUI(this.#root, data)
-		return this.#root
+		this.root = this.#insertUI(this.root, data)
+		return this.root
 	}
 
 	deleteUI(root, data) {
@@ -79,50 +78,49 @@ class BST {
 	}
 
 	delete(data) {
-		this.#root = this.deleteUI(this.#root, data)
+		this.root = this.deleteUI(this.root, data)
 	}
 
-	#preOrderUI(root, cb) {
+	#preOrderUI(root) {
 		let N = root
 		if (N) {
-			cb(N.data)
+			console.log(N.data)
 			this.#preOrderUI(N.left)
 			this.#preOrderUI(N.right)
 		}
 	}
 
 	// Wrapper Method
-	preOrder(cb = console.log) {
-		this.#preOrderUI(this.#root, cb)
+	preOrder() {
+		this.#preOrderUI(this.root)
 	}
 
-	#inOrderUI(root, cb) {
+	#inOrderUI(root) {
 		let N = root
 		if (N) {
 			this.#inOrderUI(N.left)
-			cb(N.data)
-
+			console.log(N.data)
 			this.#inOrderUI(N.right)
 		}
 	}
 
 	// Wrapper Method
-	inOrder(cb = console.log) {
-		this.#inOrderUI(this.#root, cb)
+	inOrder() {
+		this.#inOrderUI(this.root)
 	}
 
-	#postOrderUI(root, cb) {
+	#postOrderUI(root) {
 		let N = root
 		if (N) {
 			this.#postOrderUI(N.left)
 			this.#postOrderUI(N.right)
-			cb(N.data)
+			console.log(N.data)
 		}
 	}
 	// Wrapper Method
 
-	postOrder(cb = console.log) {
-		this.#postOrderUI(this.#root, cb)
+	postOrder() {
+		this.#postOrderUI(this.root)
 	}
 
 	#searchUI(root, data) {
@@ -134,10 +132,24 @@ class BST {
 	}
 
 	includes(data) {
-		return this.#searchUI(this.#root, data)
+		return this.#searchUI(this.root, data)
 	}
-	// Getters
-	get root() {
-		return this.#root
+
+	#getMinUI(root) {
+		if (root.left) return this.#getMinUI(root.left)
+		return root.data
+	}
+
+	getMin() {
+		return this.#getMinUI(this.root)
+	}
+
+	#getMaxUI(root) {
+		if (root.right) return this.#getMaxUI(root.right)
+		return root.data
+	}
+
+	getMax() {
+		return this.#getMaxUI(this.root)
 	}
 }

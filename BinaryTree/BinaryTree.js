@@ -1,8 +1,8 @@
 class TreeNode {
-	constructor(data, left = null, right = null) {
+	constructor(data) {
 		this.data = data
-		this.left = left
-		this.right = right
+		this.left = null
+		this.right = null
 	}
 
 	[Symbol.iterator] = function* depthFirst() {
@@ -17,6 +17,8 @@ class BinaryTree {
 	constructor(root) {
 		this.root = root
 	}
+
+	
 
 	#preOrderUI(root, cb) {
 		let N = root
