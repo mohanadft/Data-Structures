@@ -258,5 +258,6 @@ class BST {
 				}
 			}
 		}
+		return false
 	}
 }

@@ -18,8 +18,6 @@ class BinaryTree {
 		this.root = root
 	}
 
-	
-
 	#preOrderUI(root, cb) {
 		let N = root
 		if (N) {
@@ -30,15 +28,14 @@ class BinaryTree {
 	}
 
 	// Wrapper Method
-	preOrder(cb = console.log) {
-		this.#preOrderUI(this.root, cb)
+	preOrder() {
+		this.#preOrderUI(this.root)
 	}
 	#inOrderUI(root) {
 		let N = root
 		if (N) {
 			this.#inOrderUI(N.left)
 			console.log(N.data)
-
 			this.#inOrderUI(N.right)
 		}
 	}
@@ -48,17 +45,17 @@ class BinaryTree {
 		this.#inOrderUI(this.root)
 	}
 
-	#postOrderUI(root, cb) {
+	#postOrderUI(root) {
 		let N = root
 		if (N) {
 			this.#postOrderUI(N.left)
 			this.#postOrderUI(N.right)
-			cb(N.data)
+			console.log(N.data)
 		}
 	}
 	// Wrapper Method
 
-	postOrder(cb = console.log) {
+	postOrder() {
 		this.#postOrderUI(this.root, cb)
 	}
 
