@@ -28,3 +28,16 @@ class Stack {
 		return temp
 	}
 }
+
+// Check if an array is stack sortable
+
+const check = arr => {
+	let arr2 = [...arr]
+	if (arr.join('') === arr2.sort((a, b) => a - b).join('')) return true
+	for (let i in arr) {
+		if (arr[+i] < arr[+i + 1]) return false
+	}
+	return true
+}
+
+console.log(check([1, 2, 3]))
