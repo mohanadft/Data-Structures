@@ -152,4 +152,111 @@ class BST {
 	getMax() {
 		return this.#getMaxUI(this.root)
 	}
+
+	remove(v) {
+		if (!this.root) return false
+
+		let currentNode = this.root
+		let parentNode = null
+
+		while (currentNode) {
+			if (v < currentNode.value) {
+				parentNode = currentNode
+				currentNode = currentNode.left
+			} else if (v > currentNode.value) {
+				parentNode = currentNode
+				currentNode = currentNode.right
+			} else if (v === currentNode.value) {
+				if (!currentNode.left && !currentNode.right) {
+					if (parentNode.left === currentNode) {
+						parentNode.left = null
+						return true
+					} else {
+						parentNode.right = null
+						return true
+					}
+				}
+				if (currentNode.left === null && currentNode.right) {
+					if (parentNode.left === currentNode) {
+						let successor = currentNode.right
+						let prevSuccessor = currentNode
+						while (successor.left) {
+							prevSuccessor = successor
+							successor = successor.left
+						}
+						parentNode.left = successor
+						prevSuccessor.left = null
+						return true
+					}
+					if (parentNode.right === currentNode) {
+						let successor = currentNode.right
+						let prevSuccessor = currentNode
+
+						while (successor.left) {
+							prevSuccessor = successor
+							successor = successor.left
+						}
+						parentNode.right = successor
+						prevSuccessor.left = null
+						return true
+					}
+				}
+				if (currentNode.left && !currentNode.right) {
+					if (parentNode.left === currentNode) {
+						parentNode.left = currentNode.left
+						return true
+					}
+					if (parentNode.right === currentNode) {
+						parentNode.right = currentNode.left
+						return true
+					}
+				}
+				if (currentNode.left && currentNode.right) {
+					let leftNode = currentNode.left
+					let rightNode = currentNode.right
+
+					if (parentNode.left === currentNode) {
+						let successor = currentNode.right
+						let prevSuccessor = currentNode
+						while (successor.left) {
+							prevSuccessor = successor
+							successor = successor.left
+						}
+						if (!successor.right) {
+							parentNode.left = successor
+							successor.left = leftNode
+							successor.right = rightNode
+							prevSuccessor.left = null
+						} else {
+							parentNode.left = successor
+							prevSuccessor.left = successor.right
+							successor.left = leftNode
+							successor.right = rightNode
+							prevSuccessor.left = null
+						}
+						return true
+					}
+					if (parentNode.right === currentNode) {
+						let successor = currentNode.right
+						let prevSuccessor = currentNode
+						while (successor.left) {
+							prevSuccessor = successor
+							successor = successor.left
+						}
+						if (!successor.right) {
+							parentNode.right = successor
+							successor.left = leftNode
+							prevSuccessor.left = null
+						} else {
+							parentNode.right = successor
+							prevSuccessor.left = successor.right
+							successor.left = leftNode
+							successor.right = rightNode
+						}
+						return true
+					}
+				}
+			}
+		}
+	}
 }
