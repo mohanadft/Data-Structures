@@ -370,3 +370,68 @@ const find = (head, value) => {
 
 	return find(head.next, value)
 }
+
+/**
+ * You are given two non-empty linked lists representing two non-negative integers.
+ * The digits are stored in reverse order, and each of their nodes contains a single digit.
+ * Add the two numbers and return the sum as a linked list.
+ *
+ * You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+ *
+ * @param {Node} l1
+ * @param {Node} l2
+ * @return {Node}
+ */
+
+const addTwoNumbers = function (l1, l2) {
+	let [p1, p2] = [l1, l2]
+
+	let nOfNodesInOne = 1,
+		nOfNodesInTwo = 1
+
+	while (p1.next) {
+		p1 = p1.next
+		nOfNodesInOne++
+	}
+
+	while (p2.next) {
+		p2 = p2.next
+		nOfNodesInTwo++
+	}
+
+	if (nOfNodesInOne > nOfNodesInTwo) {
+		let i = 0
+		while (i < nOfNodesInOne - nOfNodesInTwo) {
+			p2.next = new ListNode(0)
+			p2 = p2.next
+			i++
+		}
+	} else {
+		let i = 0
+		while (i < nOfNodesInTwo - nOfNodesInOne) {
+			p1.next = new ListNode(0)
+			p1 = p1.next
+			i++
+		}
+	}
+
+	p1 = l1
+	p2 = l2
+
+	while (p1 && p2) {
+		let sum = p1.val + p2.val
+		if (sum >= 10) {
+			p1.val = sum % 10
+			if (p1.next) {
+				p1.next.val += ~~(sum / 10)
+			} else {
+				p1.next = new ListNode(~~(sum / 10))
+			}
+		} else {
+			p1.val += p2.val
+		}
+		p1 = p1.next
+		p2 = p2.next
+	}
+	return l1
+}
