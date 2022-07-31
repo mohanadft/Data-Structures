@@ -435,3 +435,37 @@ const addTwoNumbers = function (l1, l2) {
 	}
 	return l1
 }
+
+/**
+ * TODO: Given the head of a linked list, remove the nth node from
+ * the end of the list and return its head.
+ *
+ * @param {Node} head
+ * @param {number} n
+ * @return {Node}
+ */
+
+var removeNthFromEnd = function (head, n) {
+	let p1 = head
+	let p2 = head
+
+	for (let i = 0; i < n; i++) {
+		if (p2.next === null) {
+			if (i === n - 1) head = head.next
+		}
+		p2 = p2.next
+	}
+
+	if (p2) {
+		while (p2.next !== null) {
+			p1 = p1.next
+			p2 = p2.next
+		}
+	}
+
+	if (p1.next) {
+		p1.next = p1.next.next
+	}
+
+	return head
+}
