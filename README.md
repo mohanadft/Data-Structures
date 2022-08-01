@@ -2,7 +2,7 @@
 
 <p align="center">
     <img
-    src="https://github.com/mohanadft/Data-Structures/raw/main/docs/banner.png"
+    src="https://www.techyloud.com/wp-content/uploads/2022/02/Data-Structure-assignement.jpg"
     align="center" alt="Data Structures 🧱" draggable="false"
     >
 </p>
