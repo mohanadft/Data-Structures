@@ -402,14 +402,14 @@ const addTwoNumbers = function (l1, l2) {
 	if (nOfNodesInOne > nOfNodesInTwo) {
 		let i = 0
 		while (i < nOfNodesInOne - nOfNodesInTwo) {
-			p2.next = new ListNode(0)
+			p2.next = new Node(0)
 			p2 = p2.next
 			i++
 		}
 	} else {
 		let i = 0
 		while (i < nOfNodesInTwo - nOfNodesInOne) {
-			p1.next = new ListNode(0)
+			p1.next = new Node(0)
 			p1 = p1.next
 			i++
 		}
@@ -425,7 +425,7 @@ const addTwoNumbers = function (l1, l2) {
 			if (p1.next) {
 				p1.next.val += ~~(sum / 10)
 			} else {
-				p1.next = new ListNode(~~(sum / 10))
+				p1.next = new Node(~~(sum / 10))
 			}
 		} else {
 			p1.val += p2.val
@@ -468,4 +468,40 @@ var removeNthFromEnd = function (head, n) {
 	}
 
 	return head
+}
+
+/**
+ * @param {Node[]} lists
+ * @return {Node}
+ */
+
+var mergeKLists = function (lists) {
+	if (lists.length === 0 || (lists.length === 1 && lists[0] === null))
+		return null
+
+	let values = lists
+		.reduce((acc, curr) => {
+			let p = curr
+
+			while (p) {
+				acc.push(p.val)
+				p = p.next
+			}
+
+			return acc
+		}, [])
+		.sort((a, b) => b - a)
+
+	if (values.length) {
+		let mergedList = new Node(values.pop())
+		let p = mergedList
+
+		while (values.length) {
+			p.next = new Node(values.pop())
+			p = p.next
+		}
+		return mergedList
+	}
+
+	return null
 }
