@@ -92,3 +92,22 @@ const BreadthFirstTraversal = root => {
 	}
 	return values.join`, `
 }
+
+/**
+ * TODO: Given the root of a binary tree, invert the tree, and return its root.
+ *
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+
+const invert = root => {
+	if (root === null) return root
+
+	let left = invert(root.left)
+	let right = invert(root.right)
+
+	root.right = left
+	root.left = right
+
+	return root
+}
