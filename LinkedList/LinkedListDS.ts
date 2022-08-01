@@ -1,77 +1,79 @@
-class Node {
-	constructor(data, next = null) {
-		this.data = data
-		this.next = next
-	}
-	remove(data) {
-		let N = this
-		let prev = null
+class ListNode<T> {
+	data: T
+	next: ListNode<T> | null
 
-		while (N) {
-			if (N.data == data) {
-				prev.next = N.next
-			}
-			prev = N
-			N = N.next
-		}
-		console.log(this)
+	constructor(data: T) {
+		this.data = data
+		this.next = null
 	}
 }
 
-class LinkedList {
+class LinkedList<T> {
+	size: number
+	head: ListNode<T> | null
+
 	constructor() {
 		this.head = null
 		this.size = 0
 	}
 
-	insertFirst(data) {
+	insertFirst(data: T) {
+		let newNode = new ListNode(data)
+
 		if (!this.head) {
-			this.head = new Node(data, null)
+			this.head = newNode
 			this.size++
 			return
 		}
-		this.head = new Node(data, this.head)
+		newNode.next = this.head
+		this.head = newNode
 		this.size++
 	}
 
-	insertLast(data) {
-		let node = new Node(data)
-		let current
-		if (!this.head) {
-			this.head = node
-		} else {
-			current = this.head
-			while (current.next) {
-				current = current.next
-			}
-			current.next = node
+	insertLast(data: T) {
+		let newNode = new ListNode(data)
+
+		if (this.head === null) {
+			this.head = newNode
+			return
 		}
+
+		let current = this.head
+		while (current.next) {
+			current = current.next
+		}
+
+		current.next = newNode
 		this.size++
 	}
 
-	insertAtIndex(index, data) {
-		let newNode = new Node(data)
-		if (this.head || index > this.size) return
-		if (!(index = +index && index > 0)) {
-			// if the index "undefined" Or 0 this if will run.
+	insertAtIndex(index: number, data: T) {
+		if (this.head === null || index > this.size) return
+
+		if (index === 0) {
 			this.insertFirst(data)
-			this.size++
 			return
 		}
+
 		if (index === this.size) {
 			this.insertLast(data)
 			this.size++
 			return
 		}
-		let current = this.head
+
+		let newNode = new ListNode(data)
+		let current: ListNode<T> | null = this.head
+
 		for (let i = 0; i < index - 1 && current; i++) current = current.next
-		newNode.next = current.next
-		current.next = newNode
+		if (current) {
+			newNode.next = current.next
+			current.next = newNode
+		}
 		this.size++
 	}
 
 	removeFirst() {
-		if (!this.head) return
+		if (this.head === null) return
 		let temp = this.head.data
 		this.head = this.head.next
 		this.size--
@@ -79,19 +81,22 @@ class LinkedList {
 	}
 
 	removeLast() {
-		if (!this.head) return
-		let N = this.head
-		while (N.next.next != null) N = N.next
-		let temp = N.next.data
-		N.next = null
+		if (this.head === null) return
+
+		let curr: ListNode<T> | null = this.head
+		while (curr?.next?.next) curr = curr.next
+		if (curr && curr.next) {
+			let temp = curr.next.data
+			curr.next = null
+			return temp
+		}
 		this.size--
-		return temp
 	}
 
-	removeAtIndex(index) {
+	removeAtIndex(index: number) {
 		let target
 		if (!this.head || index >= this.size) return
-		if (!(index == +index && index > 0)) {
+		if (index === 0) {
 			target = this.removeFirst()
 			return target
 		}
@@ -99,66 +104,74 @@ class LinkedList {
 			target = this.removeLast()
 			return target
 		}
-		let current = this.head
+		let current: ListNode<T> | null = this.head
 		for (let i = 0; i < index - 1 && current; i++) current = current.next
-		target = current.next.data
-		current.next = current.next.next
+
+		if (current && current.next) {
+			target = current.next.data
+			current.next = current.next.next
+		}
+
 		this.size--
 		return target
 	}
 
-	indexOf(data) {
+	indexOf(data: T) {
 		let index = 0
-		if (!this.head) {
+		if (this.head === null) {
 			return -1
 		}
 
-		let N = this.head
-		while (N) {
-			if (N.data === data) {
+		let curr: ListNode<T> | null = this.head
+
+		while (curr) {
+			if (curr.data === data) {
 				return index
 			}
 			index++
-			N = N.next
+			curr = curr.next
 		}
 		return -1
 	}
 
-	elementAt(index) {
+	elementAt(index: number) {
 		if (!this.head) {
 			return
 		}
-		let N = this.head
-		for (let i = 0; i < index; i++) {
-			N = N.next
+		let curr: ListNode<T> | null = this.head
+		for (let i = 0; i < index && curr; i++) {
+			curr = curr.next
 		}
-		return N.data
+		return curr && curr.data
 	}
 
-	concat(list) {
+	concat(list: LinkedList<T>) {
 		if (this.head == null && list.head == null) {
 			return null
 		}
+
 		let N1 = this.head,
 			N2 = list.head
-		while (N1.next) {
-			N1 = N1.next
+		if (N1) {
+			while (N1.next) {
+				N1 = N1.next
+			}
+			N1.next = N2
 		}
-		N1.next = N2
 		return this
 	}
 
 	reverse() {
 		let N = this.head
-		let newHead = null
+		let newHead: ListNode<T> | null = null
 
 		while (N) {
 			if (newHead) {
-				let newNode = new Node(N.data)
+				let newNode: ListNode<T> | null = new ListNode(N.data)
 				newNode.next = newHead
 				newHead = newNode
 			} else {
-				newHead = new Node(N.data)
+				newHead = new ListNode(N.data)
 			}
 			N = N.next
 		}
@@ -168,7 +181,7 @@ class LinkedList {
 	clone() {
 		let list = new LinkedList()
 		if (!this.head) return list
-		let N = this.head
+		let N: ListNode<T> | null = this.head
 
 		while (N) {
 			list.insertLast(N.data)
@@ -177,15 +190,15 @@ class LinkedList {
 		return list
 	}
 
-	print(cb = console.log) {
+	print() {
 		let N = this.head
 		while (N) {
-			cb(N.data)
+			console.log(N.data)
 			N = N.next
 		}
 	}
 
-	printReverse(head, cb = console.log) {
+	printReverse(head: ListNode<T> | null, cb = console.log) {
 		let N = head
 		if (N) {
 			this.printReverse(N.next)
@@ -206,17 +219,20 @@ class LinkedList {
  * @returns LinkedList
  */
 
-const moveLastElementToFront = list => {
-	if (list.size === 0 || list.size === 1) return list
+const moveLastElementToFront = <T>(list: LinkedList<T>) => {
+	if (list.size === 0 || list.size === 1 || list.head === null) return list
+
 	let N = list.head
-	let N1 = null
+	let N1 = list.head
 
 	while (N.next) {
 		N1 = N
 		N = N.next
 	}
+
 	N.next = list.head
 	N1.next = null
+
 	list.head = N
 	return list
 }
@@ -229,7 +245,7 @@ const moveLastElementToFront = list => {
  * @returns number
  */
 
-const length = list => {
+const lengthIteratively = <T>(list: LinkedList<T>) => {
 	let N = list.head
 	let count = 0
 	while (N) {
@@ -243,12 +259,13 @@ const length = list => {
 
 /**
  *
- * @param {LinkedList} head
+ * @param {ListNode} head
  * @returns number
  */
 
-const lengthRecursively = head => {
-	if (!head) return 0
+const lengthRecursively = <T>(head: ListNode<T> | null) => {
+	if (head === null) return 0
+
 	let count = 0
 	if (head) {
 		count++
@@ -265,15 +282,16 @@ const lengthRecursively = head => {
  * @returns null
  */
 
-const printMiddle = list => {
-	if (!list.head) return
-	if (!list.head.next) {
+const printMiddle = <T>(list: LinkedList<T>) => {
+	if (list.head === null) return
+	if (list.head.next === null) {
 		console.log(list.head.data)
 		return
 	}
-	let N = list.head
-	for (let i = 0; i < list.size / 2 - 1; i++) N = N.next
-	console.log(N.data)
+	let curr: ListNode<T> | null = list.head
+	for (let i = 0; i < list.size / 2 - 1 && curr; i++) curr = curr.next
+
+	if (curr) console.log(curr.data)
 }
 
 // TODO: check if a singly linked list is palindrome
@@ -284,17 +302,19 @@ const printMiddle = list => {
  * @returns boolean
  */
 
-const isPalindrome2 = list => {
+const isPalindrome2 = <T>(list: LinkedList<T>) => {
 	let list2 = list.clone()
 	list.reverse()
+
 	let N1 = list.head
 	let N2 = list2.head
 
-	while (N1) {
+	while (N1 && N2) {
 		if (N1.data !== N2.data) return false
 		N1 = N1.next
 		N2 = N2.next
 	}
+
 	return true
 }
 
@@ -302,19 +322,21 @@ const isPalindrome2 = list => {
 
 /**
  *
- * @param {LinkedList} l
+ * @param {ListNode} head
  * @returns boolean
  */
 
-const isPalindrome = l => {
-	if (!l || !l.next) return true
-	let N = l
+const isPalindrome = <T>(head: ListNode<T>) => {
+	if (head === null || head.next === null) return true
+
+	let curr: ListNode<T> | null = head
 	let values = []
-	while (N) {
-		values.push(N.value)
-		N = N.next
+
+	while (curr) {
+		values.push(curr.data)
+		curr = curr.next
 	}
-	return [...values].join('') == values.reverse().join('')
+	return values.join('') == values.reverse().join('')
 }
 
 // TODO: Reverse a single linked list
@@ -325,7 +347,7 @@ const isPalindrome = l => {
  * @returns LinkedList
  */
 
-const reverse = list => {
+const reverse = <T>(list: LinkedList<T>) => {
 	let current = list.head
 	const newList = new LinkedList()
 	while (current) {
@@ -343,28 +365,28 @@ const reverse = list => {
  * (i.e., any node but the first and last node, not necessarily the exact middle)
  * of a singly linked list, given only access to that node.
  *
- * @param {Node} node
+ * @param {ListNode<T>} node
  * @returns null
  */
 
-const deleteNode = n => {
-	if (!n || !n.next) return false
-	let next = n.next
-	n.data = next.data
-	n.next = next.next
+const deleteNode = <T>(node: ListNode<T>) => {
+	if (!node || !node.next) return false
+	let next = node.next
+	node.data = next.data
+	node.next = next.next
 	return true
 }
 
 /**
  *
- * @param {Node} head
- * @param {number} value
- * @returns boolean
+ * @param {ListNode<T>} head
+ * @param {T} value
+ * @returns {boolean}
  */
 
 // TODO: Find an element
 
-const find = (head, value) => {
+const find = <T>(head: ListNode<T> | null, value: T): boolean => {
 	if (!head) return false
 	if (head.data === value) return true
 
@@ -378,13 +400,16 @@ const find = (head, value) => {
  *
  * You may assume the two numbers do not contain any leading zero, except the number 0 itself.
  *
- * @param {Node} l1
- * @param {Node} l2
- * @return {Node}
+ * @param {ListNode<number>} l1
+ * @param {ListNode<number>} l2
+ * @return {ListNode<number>}
  */
 
-const addTwoNumbers = function (l1, l2) {
-	let [p1, p2] = [l1, l2]
+const addTwoNumbers = (
+	l1: ListNode<number>,
+	l2: ListNode<number>
+): ListNode<number> => {
+	let [p1, p2]: [ListNode<number> | null, ListNode<number> | null] = [l1, l2]
 
 	let nOfNodesInOne = 1,
 		nOfNodesInTwo = 1
@@ -402,14 +427,14 @@ const addTwoNumbers = function (l1, l2) {
 	if (nOfNodesInOne > nOfNodesInTwo) {
 		let i = 0
 		while (i < nOfNodesInOne - nOfNodesInTwo) {
-			p2.next = new Node(0)
+			p2.next = new ListNode(0)
 			p2 = p2.next
 			i++
 		}
 	} else {
 		let i = 0
 		while (i < nOfNodesInTwo - nOfNodesInOne) {
-			p1.next = new Node(0)
+			p1.next = new ListNode(0)
 			p1 = p1.next
 			i++
 		}
@@ -419,16 +444,16 @@ const addTwoNumbers = function (l1, l2) {
 	p2 = l2
 
 	while (p1 && p2) {
-		let sum = p1.val + p2.val
+		let sum: number = p1.data + p2.data
 		if (sum >= 10) {
-			p1.val = sum % 10
+			p1.data = sum % 10
 			if (p1.next) {
-				p1.next.val += ~~(sum / 10)
+				p1.next.data += ~~(sum / 10)
 			} else {
-				p1.next = new Node(~~(sum / 10))
+				p1.next = new ListNode(~~(sum / 10))
 			}
 		} else {
-			p1.val += p2.val
+			p1.data += p2.data
 		}
 		p1 = p1.next
 		p2 = p2.next
@@ -440,30 +465,30 @@ const addTwoNumbers = function (l1, l2) {
  * TODO: Given the head of a linked list, remove the nth node from
  * the end of the list and return its head.
  *
- * @param {Node} head
+ * @param {ListNode} head
  * @param {number} n
- * @return {Node}
+ * @return {ListNode}
  */
 
-var removeNthFromEnd = function (head, n) {
+const removeNthFromEnd = <T>(head: ListNode<T> | null, n: number) => {
 	let p1 = head
 	let p2 = head
 
-	for (let i = 0; i < n; i++) {
+	for (let i = 0; i < n && p2; i++) {
 		if (p2.next === null) {
-			if (i === n - 1) head = head.next
+			if (i === n - 1 && head) head = head.next
 		}
 		p2 = p2.next
 	}
 
 	if (p2) {
-		while (p2.next !== null) {
+		while (p2.next !== null && p1) {
 			p1 = p1.next
 			p2 = p2.next
 		}
 	}
 
-	if (p1.next) {
+	if (p1 && p1.next) {
 		p1.next = p1.next.next
 	}
 
@@ -471,33 +496,35 @@ var removeNthFromEnd = function (head, n) {
 }
 
 /**
- * @param {Node[]} lists
- * @return {Node}
+ * @param {ListNode[]} lists
+ * @return {ListNode}
  */
 
-var mergeKLists = function (lists) {
+const mergeKLists = (lists: ListNode<number>[]) => {
 	if (lists.length === 0 || (lists.length === 1 && lists[0] === null))
 		return null
 
 	let values = lists
-		.reduce((acc, curr) => {
-			let p = curr
+		.reduce((acc: number[], curr) => {
+			let p: ListNode<number> | null = curr
 
 			while (p) {
-				acc.push(p.val)
+				acc.push(p.data)
 				p = p.next
 			}
 
 			return acc
 		}, [])
-		.sort((a, b) => b - a)
+		.sort((a, b) => {
+			return b - a
+		})
 
 	if (values.length) {
-		let mergedList = new Node(values.pop())
+		let mergedList = new ListNode(values.pop())
 		let p = mergedList
 
 		while (values.length) {
-			p.next = new Node(values.pop())
+			p.next = new ListNode(values.pop())
 			p = p.next
 		}
 		return mergedList
