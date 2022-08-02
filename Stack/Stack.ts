@@ -1,17 +1,13 @@
-class Node {
-	constructor(data) {
-		this.data = data
-		this.next = null
-	}
-}
+import { ListNode } from '../LinkedList/LinkedListDS'
 
-class Stack {
-	constructor(root) {
-		this.root = new Node(root)
+class Stack<T> {
+	root: ListNode<T> | null
+	constructor(root: T) {
+		this.root = new ListNode(root)
 	}
 
-	push(data) {
-		const newNode = new Node(data)
+	push(data: T) {
+		const newNode = new ListNode(data)
 		if (!this.root) {
 			this.root = newNode
 			return
@@ -31,13 +27,12 @@ class Stack {
 
 // Check if an array is stack sortable
 
-const check = arr => {
+const check = <T>(arr: number[]) => {
 	let arr2 = [...arr]
 	if (arr.join('') === arr2.sort((a, b) => a - b).join('')) return true
+
 	for (let i in arr) {
 		if (arr[+i] < arr[+i + 1]) return false
 	}
 	return true
 }
-
-console.log(check([1, 2, 3]))
