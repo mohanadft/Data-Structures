@@ -1,17 +1,19 @@
-class Graph {
+class Graph<T> {
+	adjacentList: { [x: string]: T[] }
+	numberOfNodes: number
 	constructor() {
 		this.numberOfNodes = 0
 		this.adjacentList = {}
 	}
-	addVertex(node) {
-		this.adjacentList[node] = []
+	addVertex(node: T) {
+		this.adjacentList[node as string] = []
 		this.numberOfNodes++
 	}
 
-	addEdge(node1, node2) {
+	addEdge(node1: T, node2: T) {
 		if (node1 && node2 in this.adjacentList) {
-			this.adjacentList[node1].push(node2)
-			this.adjacentList[node2].push(node1)
+			this.adjacentList[String(node1)].push(node2)
+			this.adjacentList[String(node2)].push(node1)
 		}
 	}
 
