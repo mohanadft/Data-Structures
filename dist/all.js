@@ -1,589 +1,512 @@
-"use strict";
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var _BST_instances, _BST_insertUI, _BST_preOrderUI, _BST_inOrderUI, _BST_postOrderUI, _BST_searchUI, _BST_getMinUI, _BST_getMaxUI;
-class TreeNode {
-    constructor(data) {
-        this.data = data;
-        this.left = null;
-        this.right = null;
-    }
-}
-class BST {
-    constructor(root) {
-        _BST_instances.add(this);
-        this.root = new TreeNode(root);
-    }
-    // Wrapper Method
-    insert(data) {
-        this.root = __classPrivateFieldGet(this, _BST_instances, "m", _BST_insertUI).call(this, this.root, data);
-        return this.root;
-    }
-    deleteUI(root, data) {
-        let p, q, s;
-        if (!root) {
-            console.error(`%cBST: %cCouldn't find the node with the value of %c${data} %cto delete.`, 'color: #0099ff; font-weight:700', `color: #FF2D2D`, 'color: yellow; font-style: italic;', 'color: #FF2D2D');
-            return root;
-        }
-        else if (data < root.data) {
-            root.left = this.deleteUI(root.left, data);
-            return root;
-        }
-        else if (data > root.data) {
-            root.right = this.deleteUI(root.right, data);
-            return root;
-        }
-        else {
-            q = root;
-            s = root;
-            if (!q.right)
-                root = q.left;
-            else if (!q.left)
-                root = q.right;
-            else {
-                p = q.right;
-                while (p) {
-                    s = p;
-                    p = p.left;
-                }
-                root = p;
-                root.left = q.left;
-                s.left = p.right;
-                if (q.right == p)
-                    root.right = p.right;
-                else
-                    root.right = q.right;
-            }
-            return root;
-        }
-    }
-    delete(data) {
-        this.root = this.deleteUI(this.root, data);
-    }
-    // Wrapper Method
-    preOrder() {
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_preOrderUI).call(this, this.root);
-    }
-    // Wrapper Method
-    inOrder() {
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_inOrderUI).call(this, this.root);
-    }
-    // Wrapper Method
-    postOrder() {
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_postOrderUI).call(this, this.root);
-    }
-    includes(data) {
-        return __classPrivateFieldGet(this, _BST_instances, "m", _BST_searchUI).call(this, this.root, data);
-    }
-    getMin() {
-        return __classPrivateFieldGet(this, _BST_instances, "m", _BST_getMinUI).call(this, this.root);
-    }
-    getMax() {
-        return __classPrivateFieldGet(this, _BST_instances, "m", _BST_getMaxUI).call(this, this.root);
-    }
-    remove(v) {
-        if (!this.root)
-            return false;
-        let currentNode = this.root;
-        let parentNode = null;
-        while (currentNode) {
-            if (v < currentNode.value) {
-                parentNode = currentNode;
-                currentNode = currentNode.left;
-            }
-            else if (v > currentNode.value) {
-                parentNode = currentNode;
-                currentNode = currentNode.right;
-            }
-            else if (v === currentNode.value) {
-                if (!currentNode.left && !currentNode.right) {
-                    if (parentNode.left === currentNode) {
-                        parentNode.left = null;
-                        return true;
-                    }
-                    else {
-                        parentNode.right = null;
-                        return true;
-                    }
-                }
-                if (currentNode.left === null && currentNode.right) {
-                    if (parentNode.left === currentNode) {
-                        let successor = currentNode.right;
-                        let prevSuccessor = currentNode;
-                        while (successor.left) {
-                            prevSuccessor = successor;
-                            successor = successor.left;
-                        }
-                        parentNode.left = successor;
-                        prevSuccessor.left = null;
-                        return true;
-                    }
-                    if (parentNode.right === currentNode) {
-                        let successor = currentNode.right;
-                        let prevSuccessor = currentNode;
-                        while (successor.left) {
-                            prevSuccessor = successor;
-                            successor = successor.left;
-                        }
-                        parentNode.right = successor;
-                        prevSuccessor.left = null;
-                        return true;
-                    }
-                }
-                if (currentNode.left && !currentNode.right) {
-                    if (parentNode.left === currentNode) {
-                        parentNode.left = currentNode.left;
-                        return true;
-                    }
-                    if (parentNode.right === currentNode) {
-                        parentNode.right = currentNode.left;
-                        return true;
-                    }
-                }
-                if (currentNode.left && currentNode.right) {
-                    let leftNode = currentNode.left;
-                    let rightNode = currentNode.right;
-                    if (parentNode.left === currentNode) {
-                        let successor = currentNode.right;
-                        let prevSuccessor = currentNode;
-                        while (successor.left) {
-                            prevSuccessor = successor;
-                            successor = successor.left;
-                        }
-                        if (!successor.right) {
-                            parentNode.left = successor;
-                            successor.left = leftNode;
-                            successor.right = rightNode;
-                            prevSuccessor.left = null;
-                        }
-                        else {
-                            parentNode.left = successor;
-                            prevSuccessor.left = successor.right;
-                            successor.left = leftNode;
-                            successor.right = rightNode;
-                            prevSuccessor.left = null;
-                        }
-                        return true;
-                    }
-                    if (parentNode.right === currentNode) {
-                        let successor = currentNode.right;
-                        let prevSuccessor = currentNode;
-                        while (successor.left) {
-                            prevSuccessor = successor;
-                            successor = successor.left;
-                        }
-                        if (!successor.right) {
-                            parentNode.right = successor;
-                            successor.left = leftNode;
-                            prevSuccessor.left = null;
-                        }
-                        else {
-                            parentNode.right = successor;
-                            prevSuccessor.left = successor.right;
-                            successor.left = leftNode;
-                            successor.right = rightNode;
-                        }
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-}
-_BST_instances = new WeakSet(), _BST_insertUI = function _BST_insertUI(root, data) {
-    if (root === null) {
-        root = new TreeNode(data);
-        return root;
-    }
-    else if (data < root.data) {
-        root.left = __classPrivateFieldGet(this, _BST_instances, "m", _BST_insertUI).call(this, root.left, data);
-        return root;
-    }
-    else if (data > root.data) {
-        root.right = __classPrivateFieldGet(this, _BST_instances, "m", _BST_insertUI).call(this, root.right, data);
-        return root;
-    }
-    else {
-        console.error(`%cBST: %cThe value of %c${data} %ccannot be added, since it already exists.`, 'color: #0099ff; font-weight:700', `color: #FF2D2D`, 'color: yellow; font-style: italic;', 'color: #FF2D2D');
-        return root;
-    }
-}, _BST_preOrderUI = function _BST_preOrderUI(root) {
-    let N = root;
-    if (N) {
-        console.log(N.data);
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_preOrderUI).call(this, N.left);
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_preOrderUI).call(this, N.right);
-    }
-}, _BST_inOrderUI = function _BST_inOrderUI(root) {
-    let N = root;
-    if (N) {
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_inOrderUI).call(this, N.left);
-        console.log(N.data);
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_inOrderUI).call(this, N.right);
-    }
-}, _BST_postOrderUI = function _BST_postOrderUI(root) {
-    let N = root;
-    if (N) {
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_postOrderUI).call(this, N.left);
-        __classPrivateFieldGet(this, _BST_instances, "m", _BST_postOrderUI).call(this, N.right);
-        console.log(N.data);
-    }
-}, _BST_searchUI = function _BST_searchUI(root, data) {
-    if (root) {
-        if (data > root.data)
-            return __classPrivateFieldGet(this, _BST_instances, "m", _BST_searchUI).call(this, root.right, data);
-        if (data < root.data)
-            return __classPrivateFieldGet(this, _BST_instances, "m", _BST_searchUI).call(this, root.left, data);
-        if (data === root.data)
-            return true;
-    }
-    else
-        return false;
-}, _BST_getMinUI = function _BST_getMinUI(root) {
-    if (root.left)
-        return __classPrivateFieldGet(this, _BST_instances, "m", _BST_getMinUI).call(this, root.left);
-    return root.data;
-}, _BST_getMaxUI = function _BST_getMaxUI(root) {
-    if (root.right)
-        return __classPrivateFieldGet(this, _BST_instances, "m", _BST_getMaxUI).call(this, root.right);
-    return root.data;
-};
-var _a, _BinaryTree_instances, _BinaryTree_root, _BinaryTree_preOrderUI, _BinaryTree_inOrderUI, _BinaryTree_postOrderUI;
-class TreeNode {
-    constructor(data) {
-        this[_a] = function* depthFirst() {
-            yield this.data;
-            if (this.left)
-                yield* this.left;
-            if (this.right)
-                yield* this.right;
-        };
-        this.data = data;
-        this.left = null;
-        this.right = null;
-    }
-}
-_a = Symbol.iterator;
-class BinaryTree {
-    constructor(root) {
-        _BinaryTree_instances.add(this);
-        _BinaryTree_root.set(this, null);
-        this.root = root;
-    }
-    // Wrapper Method
-    preOrder() {
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_preOrderUI).call(this, this.root);
-    }
-    // Wrapper Method
-    inOrder() {
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_inOrderUI).call(this, this.root);
-    }
-    // Wrapper Method
-    postOrder() {
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_postOrderUI).call(this, this.root, cb);
-    }
-    // Getters
-    get root() {
-        return __classPrivateFieldGet(this, _BinaryTree_root, "f");
-    }
-}
-_BinaryTree_root = new WeakMap(), _BinaryTree_instances = new WeakSet(), _BinaryTree_preOrderUI = function _BinaryTree_preOrderUI(root, cb) {
-    let N = root;
-    if (N) {
-        cb(N.data);
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_preOrderUI).call(this, N.left);
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_preOrderUI).call(this, N.right);
-    }
-}, _BinaryTree_inOrderUI = function _BinaryTree_inOrderUI(root) {
-    let N = root;
-    if (N) {
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_inOrderUI).call(this, N.left);
-        console.log(N.data);
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_inOrderUI).call(this, N.right);
-    }
-}, _BinaryTree_postOrderUI = function _BinaryTree_postOrderUI(root) {
-    let N = root;
-    if (N) {
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_postOrderUI).call(this, N.left);
-        __classPrivateFieldGet(this, _BinaryTree_instances, "m", _BinaryTree_postOrderUI).call(this, N.right);
-        console.log(N.data);
-    }
-};
-// Depth First Traversal === preOrder Traversal
-const depthFirstTraversal = root => {
-    if (!root)
-        return;
-    const stack = [root];
-    while (stack.length > 0) {
-        let current = stack.pop();
-        if (current.right)
-            stack.push(current.right);
-        if (current.left)
-            stack.push(current.left);
-    }
-    return values.join `, `;
-};
-// TODO: Breadth First Traversal === left to right level wise (Complete Binary Tree)
-const BreadthFirstTraversal = root => {
-    let values = [];
-    const queue = [root];
-    while (queue.length > 0) {
-        let node = queue.shift();
-        if (node) {
-            values.push(node.data);
-            queue.push(node.left);
-            queue.push(node.right);
-        }
-    }
-    return values.join `, `;
-};
-/**
- * TODO: Given the root of a binary tree, invert the tree, and return its root.
- *
- * @param {TreeNode} root
- * @return {TreeNode}
- */
-const invert = root => {
-    if (root === null)
-        return root;
-    let left = invert(root.left);
-    let right = invert(root.right);
-    root.right = left;
-    root.left = right;
-    return root;
-};
-var _CompleteBinaryTree_size;
-class Node {
-    constructor(data) {
-        this.data = data;
-        this.left = null;
-        this.right = null;
-    }
-}
-class CompleteBinaryTree {
-    constructor(root) {
-        var _a;
-        _CompleteBinaryTree_size.set(this, 0);
-        this.root = root;
-        if (root)
-            __classPrivateFieldSet(this, _CompleteBinaryTree_size, (_a = __classPrivateFieldGet(this, _CompleteBinaryTree_size, "f"), _a++, _a), "f");
-    }
-    insert(data) {
-        var _a;
-        if (!this.root)
-            this.root = new Node(data);
-        let queue = [this.root];
-        while (queue.length > 0) {
-            let target = queue.shift();
-            if (target) {
-                if (!target.left) {
-                    target.left = new Node(data);
-                    return;
-                }
-                else if (!target.right) {
-                    target.right = new Node(data);
-                    return;
-                }
-                queue.push(target.left);
-                queue.push(target.right);
-            }
-        }
-        __classPrivateFieldSet(this, _CompleteBinaryTree_size, (_a = __classPrivateFieldGet(this, _CompleteBinaryTree_size, "f"), _a++, _a), "f");
-    }
-    BreadthFirstSearchTraversal() {
-        if (!this.root)
-            return;
-        let values = [];
-        let queue = [this.root];
-        while (queue.length > 0) {
-            let target = queue.shift();
-            if (target) {
-                values.push(target.data);
-                queue.push(target.left);
-                queue.push(target.right);
-            }
-        }
-        return values.join `, `;
-    }
-    size() {
-        return __classPrivateFieldGet(this, _CompleteBinaryTree_size, "f");
-    }
-}
-_CompleteBinaryTree_size = new WeakMap();
-const isCompleteBinaryTree = root => {
-    let queue = [root];
-    while (queue.length > 0) {
-        let target = queue.shift();
-        if (target) {
-            if (!target.left && target.right)
-                return false;
-        }
-    }
-    return true;
-};
+'use strict'
 class Graph {
-    constructor() {
-        this.numberOfNodes = 0;
-        this.adjacentList = {};
-    }
-    addVertex(node) {
-        this.adjacentList[node] = [];
-        this.numberOfNodes++;
-    }
-    addEdge(node1, node2) {
-        if (node1 && node2 in this.adjacentList) {
-            this.adjacentList[String(node1)].push(node2);
-            this.adjacentList[String(node2)].push(node1);
-        }
-    }
-    showConnections() {
-        const vertecies = Object.keys(this.adjacentList);
-        for (let vertex of vertecies) {
-            console.log(`${vertex} => ${this.adjacentList[vertex].join(' ')}`);
-        }
-    }
+	constructor() {
+		this.numberOfNodes = 0
+		this.adjacentList = {}
+	}
+	addVertex(node) {
+		this.adjacentList[String(node)] = []
+		this.numberOfNodes++
+	}
+	addEdge(node1, node2) {
+		if (node1 && node2 in this.adjacentList) {
+			this.adjacentList[String(node1)].push(node2)
+			this.adjacentList[String(node2)].push(node1)
+		}
+	}
+	showConnections() {
+		const vertecies = Object.keys(this.adjacentList)
+		for (let vertex of vertecies) {
+			console.log(`${vertex} => ${this.adjacentList[vertex].join(' ')}`)
+		}
+	}
 }
-class Node {
-    constructor(data, prev = null, next = null) {
-        this.data = data;
-        this.prev = prev;
-        this.next = next;
-    }
-}
-class DuoubleList {
-    constructor() {
-        this.head = null;
-        this. = 0;
-    }
-    insertFirst(data) {
-        let newNode = new Node(data);
-        if (!this.head) {
-            this.head = newNode;
-            this.++;
-            return;
-        }
-        newNode.next = this.head;
-        this.head.prev = newNode;
-        this.head = newNode;
-        this.++;
-    }
-    insertLast(data) {
-        let newNode = new Node(data);
-        if (!this.head) {
-            this.head = newNode;
-            this.++;
-            return;
-        }
-        else if (!this.head.next) {
-            this.head.next = newNode;
-            newNode.prev = this.head;
-            this.++;
-            return;
-        }
-        let N = this.head;
-        while (N.next)
-            N = N.next;
-        N.next = newNode;
-        newNode.prev = N;
-        this.++;
-    }
-    inserAtIndex(index, data) {
-        if (!this.head || index > this.)
-            return;
-        if (!(index = +index && index > 0)) {
-            // if the index "undefined" Or Zero or less than Zero this if will run.
-            this.insertFirst(data);
-            this.++;
-            return;
-        }
-        if (index === this.) {
-            this.insertLast(data);
-            this.++;
-            return;
-        }
-        let newNode = new Node(data);
-        let current = this.head;
-        for (let i = 0; i < index - 1 && current; i++)
-            current = current.next;
-        newNode.next = current.next;
-        newNode.prev = current;
-        current.next = newNode;
-        this.++;
-    }
-    removeFirst() {
-        let temp = this.head.data;
-        if (!this.head)
-            return;
-        if (!this.head.next) {
-            this.head = null;
-            this.--;
-            return temp;
-        }
-        this.head = this.head.next;
-        this.head.prev = null;
-        this.--;
-        return temp;
-    }
-    removeLast() {
-        let target;
-        if (!this.head)
-            return;
-        if (!this.head.next) {
-            target = this.head.data;
-            this.head = null;
-            this.--;
-            return target;
-        }
-        let current = this.head;
-        while (current.next.next)
-            current = current.next;
-        target = current.next.data;
-        current.next = null;
-        this.--;
-        return target;
-    }
-    removeAtIndex(index) {
-        let target;
-        if (!this.head || index >= this.)
-            return;
-        if (!(index == +index && index > 0)) {
-            target = this.removeFirst();
-            return target;
-        }
-        if (index === this. - 1) {
-            target = this.removeLast();
-            return target;
-        }
-        let current = this.head;
-        for (let i = 0; i < index - 1 && current; i++)
-            current = current.next;
-        target = current.next.data;
-        current.next.next.prev = current;
-        current.next = current.next.next;
-        this.--;
-        return target;
-    }
-    print() {
-        if (!this.head)
-            return;
-        let N = this.head;
-        while (N) {
-            console.log(N.data);
-            N = N.next;
-        }
-    }
-    get size() {
-        return this.;
-    }
-}
+define('LinkedList/LinkedListDS', ['require', 'exports'], function (
+	require,
+	exports
+) {
+	'use strict'
+	Object.defineProperty(exports, '__esModule', { value: true })
+	exports.ListNode = void 0
+	class ListNode {
+		constructor(data) {
+			this.data = data
+			this.next = null
+		}
+	}
+	exports.ListNode = ListNode
+	class LinkedList {
+		constructor() {
+			this.head = null
+			this.size = 0
+		}
+		insertFirst(data) {
+			let newNode = new ListNode(data)
+			if (!this.head) {
+				this.head = newNode
+				this.size++
+				return
+			}
+			newNode.next = this.head
+			this.head = newNode
+			this.size++
+		}
+		insertLast(data) {
+			let newNode = new ListNode(data)
+			if (this.head === null) {
+				this.head = newNode
+				return
+			}
+			let current = this.head
+			while (current.next) {
+				current = current.next
+			}
+			current.next = newNode
+			this.size++
+		}
+		insertAtIndex(index, data) {
+			if (this.head === null || index > this.size) return
+			if (index === 0) {
+				this.insertFirst(data)
+				return
+			}
+			if (index === this.size) {
+				this.insertLast(data)
+				this.size++
+				return
+			}
+			let newNode = new ListNode(data)
+			let current = this.head
+			for (let i = 0; i < index - 1 && current; i++) current = current.next
+			if (current) {
+				newNode.next = current.next
+				current.next = newNode
+			}
+			this.size++
+		}
+		removeFirst() {
+			if (this.head === null) return
+			let temp = this.head.data
+			this.head = this.head.next
+			this.size--
+			return temp
+		}
+		removeLast() {
+			var _a
+			if (this.head === null) return
+			let curr = this.head
+			while (
+				(_a = curr === null || curr === void 0 ? void 0 : curr.next) === null ||
+				_a === void 0
+					? void 0
+					: _a.next
+			)
+				curr = curr.next
+			if (curr && curr.next) {
+				let temp = curr.next.data
+				curr.next = null
+				return temp
+			}
+			this.size--
+		}
+		removeAtIndex(index) {
+			let target
+			if (!this.head || index >= this.size) return
+			if (index === 0) {
+				target = this.removeFirst()
+				return target
+			}
+			if (index === this.size - 1) {
+				target = this.removeLast()
+				return target
+			}
+			let current = this.head
+			for (let i = 0; i < index - 1 && current; i++) current = current.next
+			if (current && current.next) {
+				target = current.next.data
+				current.next = current.next.next
+			}
+			this.size--
+			return target
+		}
+		indexOf(data) {
+			let index = 0
+			if (this.head === null) {
+				return -1
+			}
+			let curr = this.head
+			while (curr) {
+				if (curr.data === data) {
+					return index
+				}
+				index++
+				curr = curr.next
+			}
+			return -1
+		}
+		elementAt(index) {
+			if (!this.head) {
+				return
+			}
+			let curr = this.head
+			for (let i = 0; i < index && curr; i++) {
+				curr = curr.next
+			}
+			return curr && curr.data
+		}
+		concat(list) {
+			if (this.head == null && list.head == null) {
+				return null
+			}
+			let N1 = this.head,
+				N2 = list.head
+			if (N1) {
+				while (N1.next) {
+					N1 = N1.next
+				}
+				N1.next = N2
+			}
+			return this
+		}
+		reverse() {
+			let N = this.head
+			let newHead = null
+			while (N) {
+				if (newHead) {
+					let newNode = new ListNode(N.data)
+					newNode.next = newHead
+					newHead = newNode
+				} else {
+					newHead = new ListNode(N.data)
+				}
+				N = N.next
+			}
+			this.head = newHead
+		}
+		clone() {
+			let list = new LinkedList()
+			if (!this.head) return list
+			let N = this.head
+			while (N) {
+				list.insertLast(N.data)
+				N = N.next
+			}
+			return list
+		}
+		print() {
+			let N = this.head
+			while (N) {
+				console.log(N.data)
+				N = N.next
+			}
+		}
+		printReverse(head, cb = console.log) {
+			let N = head
+			if (N) {
+				this.printReverse(N.next)
+				cb(N.data)
+			}
+		}
+		clear() {
+			this.head = null
+		}
+	}
+	// TODO: Move last element to front of a given Linked List
+	/**
+	 *
+	 * @param {LinkedList} list
+	 * @returns LinkedList
+	 */
+	const moveLastElementToFront = list => {
+		if (list.size === 0 || list.size === 1 || list.head === null) return list
+		let N = list.head
+		let N1 = list.head
+		while (N.next) {
+			N1 = N
+			N = N.next
+		}
+		N.next = list.head
+		N1.next = null
+		list.head = N
+		return list
+	}
+	// TODO: Length Of List Iteratively
+	/**
+	 *
+	 * @param {LinkedList} list
+	 * @returns number
+	 */
+	const lengthIteratively = list => {
+		let N = list.head
+		let count = 0
+		while (N) {
+			count++
+			N = N.next
+		}
+		return count
+	}
+	// TODO: Length Of List Recursively
+	/**
+	 *
+	 * @param {ListNode} head
+	 * @returns number
+	 */
+	const lengthRecursively = head => {
+		if (head === null) return 0
+		let count = 0
+		if (head) {
+			count++
+			count += lengthRecursively(head.next)
+		}
+		return count
+	}
+	// TODO: Print the middle of a given linked list
+	/**
+	 *
+	 * @param {LinkedList} list
+	 * @returns null
+	 */
+	const printMiddle = list => {
+		if (list.head === null) return
+		if (list.head.next === null) {
+			console.log(list.head.data)
+			return
+		}
+		let curr = list.head
+		for (let i = 0; i < list.size / 2 - 1 && curr; i++) curr = curr.next
+		if (curr) console.log(curr.data)
+	}
+	// TODO: check if a singly linked list is palindrome
+	/**
+	 *
+	 * @param {LinkedList} list
+	 * @returns boolean
+	 */
+	const isPalindrome2 = list => {
+		let list2 = list.clone()
+		list.reverse()
+		let N1 = list.head
+		let N2 = list2.head
+		while (N1 && N2) {
+			if (N1.data !== N2.data) return false
+			N1 = N1.next
+			N2 = N2.next
+		}
+		return true
+	}
+	// TODO: check if a singly linked list is palindrome
+	/**
+	 *
+	 * @param {ListNode} head
+	 * @returns boolean
+	 */
+	const isPalindrome = head => {
+		if (head === null || head.next === null) return true
+		let curr = head
+		let values = []
+		while (curr) {
+			values.push(curr.data)
+			curr = curr.next
+		}
+		return values.join('') == values.reverse().join('')
+	}
+	// TODO: Reverse a single linked list
+	/**
+	 *
+	 * @param {LinkedList} list
+	 * @returns LinkedList
+	 */
+	const reverse = list => {
+		let current = list.head
+		const newList = new LinkedList()
+		while (current) {
+			newList.insertFirst(current.data)
+			current = current.next
+		}
+		return newList
+	}
+	/**
+	 * TODO:
+	 * Delete Middle Node:
+	 *
+	 * Implement an algorithm to delete a node in the middle
+	 * (i.e., any node but the first and last node, not necessarily the exact middle)
+	 * of a singly linked list, given only access to that node.
+	 *
+	 * @param {ListNode<T>} node
+	 * @returns null
+	 */
+	const deleteNode = node => {
+		if (!node || !node.next) return false
+		let next = node.next
+		node.data = next.data
+		node.next = next.next
+		return true
+	}
+	/**
+	 *
+	 * @param {ListNode<T>} head
+	 * @param {T} value
+	 * @returns {boolean}
+	 */
+	// TODO: Find an element
+	const find = (head, value) => {
+		if (!head) return false
+		if (head.data === value) return true
+		return find(head.next, value)
+	}
+	/**
+	 * You are given two non-empty linked lists representing two non-negative integers.
+	 * The digits are stored in reverse order, and each of their nodes contains a single digit.
+	 * Add the two numbers and return the sum as a linked list.
+	 *
+	 * You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+	 *
+	 * @param {ListNode<number>} l1
+	 * @param {ListNode<number>} l2
+	 * @return {ListNode<number>}
+	 */
+	const addTwoNumbers = (l1, l2) => {
+		let [p1, p2] = [l1, l2]
+		let nOfNodesInOne = 1,
+			nOfNodesInTwo = 1
+		while (p1.next) {
+			p1 = p1.next
+			nOfNodesInOne++
+		}
+		while (p2.next) {
+			p2 = p2.next
+			nOfNodesInTwo++
+		}
+		if (nOfNodesInOne > nOfNodesInTwo) {
+			let i = 0
+			while (i < nOfNodesInOne - nOfNodesInTwo) {
+				p2.next = new ListNode(0)
+				p2 = p2.next
+				i++
+			}
+		} else {
+			let i = 0
+			while (i < nOfNodesInTwo - nOfNodesInOne) {
+				p1.next = new ListNode(0)
+				p1 = p1.next
+				i++
+			}
+		}
+		p1 = l1
+		p2 = l2
+		while (p1 && p2) {
+			let sum = p1.data + p2.data
+			if (sum >= 10) {
+				p1.data = sum % 10
+				if (p1.next) {
+					p1.next.data += ~~(sum / 10)
+				} else {
+					p1.next = new ListNode(~~(sum / 10))
+				}
+			} else {
+				p1.data += p2.data
+			}
+			p1 = p1.next
+			p2 = p2.next
+		}
+		return l1
+	}
+	/**
+	 * TODO: Given the head of a linked list, remove the nth node from
+	 * the end of the list and return its head.
+	 *
+	 * @param {ListNode} head
+	 * @param {number} n
+	 * @return {ListNode}
+	 */
+	const removeNthFromEnd = (head, n) => {
+		let p1 = head
+		let p2 = head
+		for (let i = 0; i < n && p2; i++) {
+			if (p2.next === null) {
+				if (i === n - 1 && head) head = head.next
+			}
+			p2 = p2.next
+		}
+		if (p2) {
+			while (p2.next !== null && p1) {
+				p1 = p1.next
+				p2 = p2.next
+			}
+		}
+		if (p1 && p1.next) {
+			p1.next = p1.next.next
+		}
+		return head
+	}
+	/**
+	 * @param {ListNode[]} lists
+	 * @return {ListNode}
+	 */
+	const mergeKLists = lists => {
+		if (lists.length === 0 || (lists.length === 1 && lists[0] === null))
+			return null
+		let values = lists
+			.reduce((acc, curr) => {
+				let p = curr
+				while (p) {
+					acc.push(p.data)
+					p = p.next
+				}
+				return acc
+			}, [])
+			.sort((a, b) => {
+				return b - a
+			})
+		if (values.length) {
+			let mergedList = new ListNode(values.pop())
+			let p = mergedList
+			while (values.length) {
+				p.next = new ListNode(values.pop())
+				p = p.next
+			}
+			return mergedList
+		}
+		return null
+	}
+})
+define('Stack/Stack', [
+	'require',
+	'exports',
+	'LinkedList/LinkedListDS'
+], function (require, exports, LinkedListDS_1) {
+	'use strict'
+	Object.defineProperty(exports, '__esModule', { value: true })
+	class Stack {
+		constructor(root) {
+			this.root = new LinkedListDS_1.ListNode(root)
+		}
+		push(data) {
+			const newNode = new LinkedListDS_1.ListNode(data)
+			if (!this.root) {
+				this.root = newNode
+				return
+			}
+			let currentNode = this.root
+			while (currentNode.next) currentNode = currentNode.next
+			currentNode.next = newNode
+		}
+		pop() {
+			if (!this.root) return null
+			const temp = this.root.data
+			this.root = this.root.next
+			return temp
+		}
+	}
+	// Check if an array is stack sortable
+	const check = arr => {
+		let arr2 = [...arr]
+		if (arr.join('') === arr2.sort((a, b) => a - b).join('')) return true
+		for (let i in arr) {
+			if (arr[+i] < arr[+i + 1]) return false
+		}
+		return true
+	}
+})
 //# sourceMappingURL=all.js.map

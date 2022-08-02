@@ -6,7 +6,7 @@ class Graph<T> {
 		this.adjacentList = {}
 	}
 	addVertex(node: T) {
-		this.adjacentList[node as string] = []
+		this.adjacentList[String(node)] = []
 		this.numberOfNodes++
 	}
 
