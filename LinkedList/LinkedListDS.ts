@@ -9,12 +9,11 @@ export class ListNode<T> {
 }
 
 class LinkedList<T> {
-	size: number
+	size: number = 0
 	head: ListNode<T> | null
 
-	constructor() {
-		this.head = null
-		this.size = 0
+	constructor(head: T) {
+		this.head = new ListNode(head)
 	}
 
 	insertFirst(data: T) {
@@ -179,9 +178,9 @@ class LinkedList<T> {
 	}
 
 	clone() {
-		let list = new LinkedList()
-		if (!this.head) return list
-		let N: ListNode<T> | null = this.head
+		if (!this.head) return null
+		let list = new LinkedList(this.head.data)
+		let N: ListNode<T> | null = this.head.next
 
 		while (N) {
 			list.insertLast(N.data)
@@ -307,7 +306,7 @@ const isPalindrome2 = <T>(list: LinkedList<T>) => {
 	list.reverse()
 
 	let N1 = list.head
-	let N2 = list2.head
+	let N2 = list2 && list2.head
 
 	while (N1 && N2) {
 		if (N1.data !== N2.data) return false
@@ -348,8 +347,8 @@ const isPalindrome = <T>(head: ListNode<T>) => {
  */
 
 const reverse = <T>(list: LinkedList<T>) => {
-	let current = list.head
-	const newList = new LinkedList()
+	let current = list.head?.next
+	const newList = new LinkedList(list.head?.data)
 	while (current) {
 		newList.insertFirst(current.data)
 		current = current.next
