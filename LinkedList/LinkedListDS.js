@@ -538,3 +538,24 @@ const detectCycle = head => {
 
 	return false
 }
+
+/**
+ * Time Complexity: O(n)
+ * Space Complexity: O(1)
+ * Blazingly Efficient!!
+ *
+ * Lookup: Floyd's cycle detection algorithm
+ */
+
+const detectCycle2 = head => {
+	let tortoise = head // 🐢
+	let hare = head // 🐇
+
+	while (hare && hare.next) {
+		if (tortoise === hare) return true
+		tortoise = tortoise.next
+		hare = hare.next.next
+	}
+
+	return false
+}
